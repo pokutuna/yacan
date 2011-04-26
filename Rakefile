@@ -15,14 +15,15 @@ Jeweler::Tasks.new do |gem|
   gem.name = "yacan"
   gem.homepage = "http://github.com/pokutuna/yacan"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
-  gem.email = "oneetyan@gmail.com"
+  gem.summary = %Q{YaCan}
+  gem.description = %Q{YaCan is a wrapper for Yahoo Japan Text Analysis Web API}
+  gem.email = "popopopopokutuna@gmail.com"
   gem.authors = ["pokutuna"]
   # Include your dependencies below. Runtime dependencies are required when using your gem,
   # and development dependencies are only needed for development (ie running rake tasks, tests, etc)
   #  gem.add_runtime_dependency 'jabber4r', '> 0.1'
   #  gem.add_development_dependency 'rspec', '> 1.2.3'
+  gem.add_dependency 'nokogiri'
 end
 Jeweler::RubygemsDotOrgTasks.new
 
@@ -47,4 +48,5 @@ Rake::RDocTask.new do |rdoc|
   rdoc.title = "yacan #{version}"
   rdoc.rdoc_files.include('README*')
   rdoc.rdoc_files.include('lib/**/*.rb')
+  rdoc.options = ['--charset', 'utf-8', '--line-numbers']
 end
