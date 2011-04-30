@@ -3,7 +3,11 @@ Yahoo!テキスト解析APIをラップするgem
 
 http://developer.yahoo.co.jp/webapi/jlp/
 
+== インストール
+  % gem install yacan
+
 == Example
+
 === 準備
   # アプリケーションIDを渡す
   YaCan.appid = '*****'
