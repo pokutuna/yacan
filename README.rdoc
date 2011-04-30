@@ -1,7 +1,75 @@
 = yacan
+Yahoo!テキスト解析APIをラップするgem
 
-Description goes here.
+http://developer.yahoo.co.jp/webapi/jlp/
 
+== Example
+=== 準備
+  # アプリケーションIDを渡す
+  YaCan.appid = '*****'
+
+=== 係り受け解析
+http://developer.yahoo.co.jp/webapi/jlp/da/v1/parse.html
+
+1文ずつ渡さないと変な結果になる
+
+  # 解析
+  d = YaCan::Dependency.parse('ＤＶＤが終わるまで私はお二人の足台にさせられました。')
+  d.chunks #=> [0 1 ＤＶＤが, 1 5 終わるまで, 2 5 私は, 3 4 お二人の, 4 5 足台に, 5 -1 させられました。]
+    # 文中に含まれるChunk(文節)インスタンスの配列
+  d.morphems #=> [ＤＶＤ: 名詞,名詞,*,ＤＶＤ,でぃーぶいでぃー,DVD, が: 助詞,格助詞,*,が,が,が, 終わる: 動詞,ラ五,基本形,終わる,おわ,終わ, まで: 助詞,副助詞,*,まで,まで,まで, 私: 名詞,名詞人,*,私,わたし,私, は: 助詞,係助詞,*,は,は,は, お: 接頭辞,接頭お,*,お,お,お, 二人: 名詞,名詞人,*,二人,ふたり,二人, の: 助詞,助詞連体化,*,の,の,の, 足: 名詞,名詞,*,足,あし,足, 台: 接尾辞,接尾地名,*,台,だい,台, に: 助詞,助詞副詞化,*,に,に,に, させ: 動詞,サ五,連用テ接続,させ,さ,さ, られ: 助動詞,助動詞一段,未然ウ接続,られ,られ,られ, まし: 助動詞,助動詞ます,未然ウ接続,まし,ま,ま, た: 助動詞,助動詞た,基本形,た,た,た, 。: 特殊,句点,*,。,。,。] 
+    # 文中に含まれるMorphem(形態素)のインスタンスの配列
+    
+  # Chunk
+  chunk = d.chunks[3]
+  chunk.to_s #=> "3 4 お二人の"
+  chunk.id #=> 3 ; 文節ID
+  chunk.dependency #=> 4 ; 係り先のID、なければ-1
+  chunk.morphems #=> [お: 接頭辞,接頭お,*,お,お,お, 二人: 名詞,名詞人,*,二人,ふたり,二人, の: 助,助詞連体化,*,の,の,の]
+    # Morphem(形態素)インスタンスの配列
+  chunk.depends_on #=> 4 5 足台に ; 係り先のChunk、なければnil
+  chunk.depends_from #=> [] ; 係り元のChunkの配列
+
+  # Morphem
+  morphem = chunk.morphems[1]
+  morphem.to_s #=> 二人: 名詞,名詞人,*,二人,ふたり,二人
+  morphem.surface #=> "二人" ; 表記
+  morphem.reading #=> "ふたり" ; 読み
+  morphem.baseform #=> "二人" ; 基本形
+  morphem.pos #=> "名詞" ; 品詞
+  morphem.feature #=> ["名詞", "名詞人", "*", "二人", "ふたり", "二人"] ; 形態素の全情報
+
+  
+=== キーフレーズ抽出
+http://developer.yahoo.co.jp/webapi/jlp/keyphrase/v1/extract.html
+
+  # 抽出
+  k = YaCan::Keyphrase.extract('ＤＶＤが終わるまで私はお二人の足台にさせられました。')
+  
+  k.results #=> [["足台", 100], ["お二人", 85], ["DVD", 65], ["私", 35]]
+    # キーフレーズとスコアのペアの配列
+  k.phrases #=> ["足台", "お二人", "DVD", "私"]
+  k.scores #=> [100, 85, 65, 35]
+
+
+=== 形態素解析
+http://developer.yahoo.co.jp/webapi/jlp/ma/v1/parse.html
+
+作ったけど係り受け解析使えば用は済みそう 
+
+  # 解析
+  m = YaCan::Morphem.parse('ＤＶＤが終わるまで私はお二人の足台にさせられました。', {'filter' => '9' })
+    # 抽出対象品詞のフィルタとか渡せる、APIのページ見れば分かる感じ
+  m.ma_result.morphems.map(&:surface) #=> ["ＤＶＤ", "私", "二人", "足", "台"] 
+
+あとはコード見てほしい
+
+https://github.com/pokutuna/yacan/blob/master/lib/yacan/morphem.rb
+
+== その他
+* テストは環境変数のYAHOO_API_APPIDをみにいってる
+* 環境変数のhttp_proxyを見て通信してる。YaCan.proxy_host=, YaCan.proxy_port= で設定もできる
+  
 == Contributing to yacan
  
 * Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet
