@@ -8,6 +8,7 @@ module YaCan
   require 'yacan/yahoo_api'
   require 'yacan/dependency'
   require 'yacan/keyphrase'
+  require 'yacan/morphem'
 
   @@proxy_host, @@proxy_port = (ENV["http_proxy"] || '').sub(/http:\/\//, '').split(':')
 
