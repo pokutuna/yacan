@@ -17,7 +17,7 @@ module YaCan::Morphem
   end
 
   def parse(text, params={})
-    analyze(text)
+    analyze(text, params)
   end
 
   module_function :analyze, :parse
