@@ -17,6 +17,10 @@ describe "Dependency" do
     YaCan::Dependency.parse(@phrase).chunks.to_s.should == YaCan::Dependency.analyze(@phrase).chunks.to_s
   end
 
+  it 'should have module name shortened' do
+    YaCan::Dependency.should == YaCan::DA
+  end
+
   describe "Result" do
     before(:all) do
       @result = YaCan::Dependency::Result.new(@xml)

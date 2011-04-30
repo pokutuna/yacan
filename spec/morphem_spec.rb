@@ -17,4 +17,8 @@ describe "Morphem" do
     res.ma_result.filtered_count.should == 3
     res.uniq_result.total_count.should == nil
   end
+
+  it 'should have module name shortened' do
+    YaCan::MA.should == YaCan::Morphem
+  end
 end

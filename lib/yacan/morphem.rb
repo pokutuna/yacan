@@ -1,4 +1,5 @@
 module YaCan::Morphem
+  YaCan::MA = YaCan::Morphem
   @@path = '/MAService/V1/parse'
 
   @@default_params = {

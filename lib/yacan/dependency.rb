@@ -1,4 +1,5 @@
 module YaCan::Dependency
+  YaCan::DA = YaCan::Dependency
   @@path = '/DAService/V1/parse'
 
   def analyze(text)
